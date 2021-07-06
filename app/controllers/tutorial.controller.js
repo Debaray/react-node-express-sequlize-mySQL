@@ -66,9 +66,14 @@ exports.findOne = (req,res) => {
 };
 
 //Update a Tutorial by the id in the request
-exports.delete = (req,res) => {
+exports.update = (req,res) => {
 
 };
+
+//Delete all Tutorial with the specified id in the request
+exports.delete = (req,res) =>{
+
+}
 
 //Find all published Tutorials
 exports.findAllPublished = (req,res) => { 

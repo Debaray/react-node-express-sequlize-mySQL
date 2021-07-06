@@ -18,7 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true}));
 
 //sync sequilize database
 const db = require("./app/models");
-db.sequelize.sync();
+//for development purpose, drop existing tables and re-sync database using {force: true} else no need to use {force : true}
+db.sequelize.sync({ force: true }).then(() => {
+    console.log("Drop and re-sync db");
+});
 
 //simple route
 app.get("/", (req,res) =>{

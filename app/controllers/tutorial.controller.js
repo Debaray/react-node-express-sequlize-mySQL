@@ -37,6 +37,7 @@ exports.create =( req,res) =>{
 exports.findAll = (req,res) => {
 
         const title = req.query.title;
+        console.log(title);
         var condition = title ? { title: {[Op.like]: `%${title}%`} } : null;
 
         Tutorial.findAll({where: condition})
@@ -52,7 +53,7 @@ exports.findAll = (req,res) => {
 
 //Find a single Tutorial with an id
 exports.findOne = (req,res) => {
-    const id = req.parms.id;
+    const id = req.params.id;
 
     Tutorial.findByPk(id)
     .then(data => {

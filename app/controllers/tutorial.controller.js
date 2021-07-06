@@ -67,14 +67,69 @@ exports.findOne = (req,res) => {
 
 //Update a Tutorial by the id in the request
 exports.update = (req,res) => {
-
+    const id = req.params.id;
+    Tutorial.update(req.body, {
+        where: {id : id}
+    })
+    .then(num => {
+        if(num == 1){
+            res.send({
+                message: "Tutorial was updated successfully."
+            })
+        }else {
+            res.send({
+                message: `Cannot update Tutorial with id= ${id}. Maybe Tutorial was not found or req.body is empty!`
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error updating Tutorial with id="+id
+        });
+    });
 };
 
 //Delete all Tutorial with the specified id in the request
 exports.delete = (req,res) =>{
+    const id = req.params.id;
+    Tutorial.destroy({
+        where: {id : id}
+    })
+    .then(num => {
+        if(num ==1) {
+            res.send({
+                message: "Tutorial was deleted successfully!"
+            });
+        }
+        else{
+            res.send({
+                message : `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete Tutorial with id="+id
+        });
+    });
 
 }
 
+// Delete all Tutorial from  the database.
+exports.deleteAll = (req,res) => {
+    Tutorial.destroy({
+        where : {},
+        truncate: false
+    })
+    .then(nums => {
+        res.send({message: `${nums} Tutorials were deleted successfully!`})
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occured while removing tutorials."
+        });
+    });
+};
 //Find all published Tutorials
 exports.findAllPublished = (req,res) => { 
 

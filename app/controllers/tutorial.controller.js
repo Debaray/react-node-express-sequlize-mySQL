@@ -37,12 +37,20 @@ exports.create =( req,res) =>{
 exports.findAll = (req,res) => {
 
         const title = req.query.title;
-        console.log(title);
-        var condition = title ? { title: {[Op.like]: `%${title}%`} } : null;
+        const limit = parseInt(req.query.size);
+        const offset = parseInt(req.query.page)*limit ;
 
-        Tutorial.findAll({where: condition})
+        console.log(req); 
+        var condition = title ? { title: {[Op.like]: `%${title}%`} } : null;
+        console.log("condition",condition);
+        Tutorial.findAndCountAll({
+            where: condition,
+            limit,
+            offset,
+        })
         .then(data => {
-            res.send(data);
+            console.log(data);
+            res.send({tutorials : data.rows , totalPages : Math.ceil(data.count/limit) });
         })
         .catch(err => {
             res.status(500).send({
